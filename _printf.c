@@ -1,4 +1,4 @@
-#include "main.h"
+#include "header.h"
 /**
  * _printf - function that prints a formatted string.
  * @format: Characters of string
@@ -6,12 +6,10 @@
  */
 int _printf(const char *format, ...)
 {
+	int h, r_value = 0;
 	va_list args;
 
 	va_start(args, format);
-	unsigned int h = 0;
-
-	r_value = 0;
 
 	for ( ; format[h] != '\0' ; h++)
 	{
@@ -38,7 +36,7 @@ int _printf(const char *format, ...)
 		}
 		else if ((format[h + 1] == 'd') || (format[h + 1] == 'i'))
 		{
-			get_int(va_arg(args, int));
+			put_int(va_arg(args, int));
 			h++;
 		}
 		r_value += 1;
