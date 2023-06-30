@@ -11,30 +11,30 @@ int _printf(const char *format, ...)
 
 	va_start(args, format);
 
-	for ( ; format[h] != '\0' ; h++)
+	for (*format != '\0' ; h++)
 	{
-		if (format[h] != '%')
+		if (*format != '%')
 		{
-			putchr(format[h]);
+			putchr(*format[);
 		}
-		else if (format[h + 1] == 'c')
+		else if (*format == 'c')
 		{
 			putchr(va_arg(args, int));
 			h++;
 		}
-		else if (format[h + 1] == 's')
+		else if (*format == 's')
 		{
 		int r_val = put_s(va_arg(args, char *));
 
 			r_value += (r_val - 1);
 			h++;
 		}
-		else if (format[h + 1] == "%")
+		else if (*format == "%")
 		{
 			putchr('%');
 			h++;
 		}
-		else if ((format[h + 1] == 'd') || (format[h + 1] == 'i'))
+		else if ((*format == 'd') || (*format == 'i'))
 		{
 			put_int(va_arg(args, int));
 			h++;
