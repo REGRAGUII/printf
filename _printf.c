@@ -1,4 +1,6 @@
 #include "main.h"
+#include <stdio.h>
+#include <stdarg.h>
 
 /**
  * _printf - prints a formatted string to stdout, similar to printf.
@@ -26,14 +28,14 @@ int _printf(const char *format, ...)
 		{
 			if (format[i + 1] == '%')
 			{
-				printed += _putchar('%');
+				printed += putchar('%');
 				i++;
 				continue;
 			}
 			else if (format[i + 1] == 'c')
 			{
 				char c = va_arg(args, int);
-				printed += _putchar(c);
+				printed += putchar(c);
 				i++;
 				continue;
 			}
@@ -41,21 +43,20 @@ int _printf(const char *format, ...)
 			{
 				char *s = va_arg(args, char *);
 				if (s)
-					printed += _puts(s);
+					printed += puts(s);
 				else
-					printed += _puts("(null)");
+					printed += puts("(null)");
 				i++;
 				continue;
 			}
 			else
 			{
-				// Handle invalid specifier
-				printed += _putchar('%');
+				printed += putchar('%');
 				continue;
 			}
 		}
 
-		printed += _putchar(format[i]);
+		printed += putchar(format[i]);
 	}
 
 	va_end(args);
