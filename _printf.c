@@ -1,6 +1,6 @@
 #include "main.h"
-#include <stdio.h>
 #include <stdarg.h>
+#include <stdio.h>
 
 /**
  * _printf - prints a formatted string to stdout, similar to printf.
@@ -15,50 +15,60 @@
 int _printf(const char *format, ...)
 {
 	va_list args;
-	int i = 0, printed = 0;
+	int printed = 0;
 
 	if (!format)
-		return (-1);
+		return -1;
 
 	va_start(args, format);
 
-	for (; format && format[i]; i++)
+	while (*format)
 	{
-		if (format[i] == '%')
+		if (*format == '%')
 		{
-			if (format[i + 1] == '%')
-			{
-				printed += putchar('%');
-				i++;
-				continue;
-			}
-			else if (format[i + 1] == 'c')
+			format++;
+
+			if (*format == 'c')
 			{
 				char c = va_arg(args, int);
-				printed += putchar(c);
-				i++;
-				continue;
+				putchar(c);
+				printed++;
 			}
-			else if (format[i + 1] == 's')
+			else if (*format == 's')
 			{
 				char *s = va_arg(args, char *);
 				if (s)
-					printed += puts(s);
-				else
-					printed += puts("(null)");
-				i++;
-				continue;
+				{
+					while (*s)
+					{
+						putchar(*s);
+						printed++;
+						s++;
+					}
+				}
 			}
-			else
+			else if (*format == 'd' || *format == 'i')
 			{
-				printed += putchar('%');
-				continue;
+				int num = va_arg(args, int);
+				printf("%d", num);
+				printed++;
+			}
+			else if (*format == '%')
+			{
+				putchar('%');
+				printed++;
 			}
 		}
+		else
+		{
+			putchar(*format);
+			printed++;
+		}
 
-		printed += putchar(format[i]);
+		format++;
 	}
 
 	va_end(args);
-	return (printed);
+
+	return printed;
 }
