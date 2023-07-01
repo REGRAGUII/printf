@@ -1,45 +1,63 @@
-#include "header.h"
+#include "main.h"
+
 /**
- * _printf - function that prints a formatted string.
- * @format: Characters of string
- * Return: The number of char printed.
+ * _printf - prints a formatted string to stdout, similar to printf.
+ * @format: the format of the string to be printed.
+ *
+ * This function prints a formatted string to the stdout stream. It
+ * accepts a format string as its first argument and any additional arguments
+ * will be used to replace format specifiers in the format string.
+ *
+ * Return: the number of characters printed to the stdout stream.
  */
 int _printf(const char *format, ...)
 {
-	int h, r_value = 0;
 	va_list args;
+	int i = 0, printed = 0;
+
+	if (!format)
+		return (-1);
 
 	va_start(args, format);
 
-	for (*format != '\0' ; h++)
+	for (; format && format[i]; i++)
 	{
-		if (*format != '%')
+		if (format[i] == '%')
 		{
-			putchr(*format[);
+			if (format[i + 1] == '%')
+			{
+				printed += _putchar('%');
+				i++;
+				continue;
+			}
+			else if (format[i + 1] == 'c')
+			{
+				char c = va_arg(args, int);
+				printed += _putchar(c);
+				i++;
+				continue;
+			}
+			else if (format[i + 1] == 's')
+			{
+				char *s = va_arg(args, char *);
+				if (s)
+					printed += _puts(s);
+				else
+					printed += _puts("(null)");
+				i++;
+				continue;
+			}
+			else
+			{
+				// Handle invalid specifier
+				printed += _putchar('%');
+				continue;
+			}
 		}
-		else if (*format == 'c')
-		{
-			putchr(va_arg(args, int));
-			h++;
-		}
-		else if (*format == 's')
-		{
-		int r_val = put_s(va_arg(args, char *));
 
-			r_value += (r_val - 1);
-			h++;
-		}
-		else if (*format == "%")
-		{
-			putchr('%');
-			h++;
-		}
-		else if ((*format == 'd') || (*format == 'i'))
-		{
-			put_int(va_arg(args, int));
-			h++;
-		}
-		r_value += 1;
+		printed += _putchar(format[i]);
 	}
-	return (r_value);
+
+	va_end(args);
+	return (printed);
 }
