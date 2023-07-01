@@ -9,8 +9,8 @@
 #include <stdarg.h>
 #include <unistd.h>
 int _printf(const char *format, ...);
-int putchr(char q);
-int put_s(char *string);
+int putchar(char q);
+int puts(char *string);
 int put_int(int integer);
 
 

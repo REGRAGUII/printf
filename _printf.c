@@ -1,74 +1,51 @@
-#include "main.h"
 #include <stdarg.h>
+#include <stddef.h>
+#include <stdlib.h>
 #include <stdio.h>
-
+#include "main.h"
 /**
- * _printf - prints a formatted string to stdout, similar to printf.
- * @format: the format of the string to be printed.
- *
- * This function prints a formatted string to the stdout stream. It
- * accepts a format string as its first argument and any additional arguments
- * will be used to replace format specifiers in the format string.
- *
- * Return: the number of characters printed to the stdout stream.
- */
+* _printf - all of the logic for the printf project.
+* @format: string specifier formats.
+*
+* Return: Gives The length(char_num++).
+*/
 int _printf(const char *format, ...)
 {
-	va_list args;
-	int printed = 0;
+	va_list ap;
+	unsigned int i = 0, char_num = 0;
 
 	if (!format)
-		return -1;
-
-	va_start(args, format);
-
-	while (*format)
+		return (-1);
+	va_start(ap, format);
+	for (i = 0; format[i] != '\0'; i++)
 	{
-		if (*format == '%')
+		if (format[i] == '%')
 		{
-			format++;
-
-			if (*format == 'c')
+			if (format[i + 1] == '\0')
+				return (-1);
+			else if (format[i + 1] == '%')
 			{
-				char c = va_arg(args, int);
-				putchar(c);
-				printed++;
+				_putchar('%');
+				char_num++;
+				i++;
 			}
-			else if (*format == 's')
+			else if (func(format[i + 1]) != NULL)
 			{
-				char *s = va_arg(args, char *);
-				if (s)
-				{
-					while (*s)
-					{
-						putchar(*s);
-						printed++;
-						s++;
-					}
-				}
+				char_num += (func(format[i + 1]))(ap);
+				i++;
 			}
-			else if (*format == 'd' || *format == 'i')
+			else
 			{
-				int num = va_arg(args, int);
-				printf("%d", num);
-				printed++;
-			}
-			else if (*format == '%')
-			{
-				putchar('%');
-				printed++;
+				_putchar(format[i]);
+				char_num++;
 			}
 		}
 		else
 		{
-			putchar(*format);
-			printed++;
+			_putchar(format[i]);
+			char_num++;
 		}
-
-		format++;
 	}
-
-	va_end(args);
-
-	return printed;
+	return (char_num);
+	va_end(ap);
 }
